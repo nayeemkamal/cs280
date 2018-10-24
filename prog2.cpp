@@ -81,16 +81,16 @@ int main(int argc, char* argv[]) {
             } else if(!iFile.is_open()) {
                 cerr << "UNABLE TO OPEN " << source << endl;
             } else {
-            in = &iFile;
+                in = &iFile;
                 while((tok = getNextToken(&iFile, &lineNum)) != ERR && tok != DONE) {
                 // handle verbose mode
                     if(v) {
-                        if(tok.GetTokenType() == ERR) {
-                            cout << "Error on line " << &lineNum;
-                        }
                         cout << tok << endl;
                     }
-            //TODO: keep statistics for other flags
+                }
+                if(tok.GetTokenType() == ERR) {
+                    cout << "Error on line " << lineNum << " (";
+                    cout << tok.GetLexeme() << ")" << endl;
                 }
             }
         }

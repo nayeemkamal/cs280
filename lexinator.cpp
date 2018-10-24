@@ -51,7 +51,7 @@ Token getNextToken(istream *in, int *lineNum) {
     string lexeme;
     char ch;
     LexState state = BEGIN;
-   
+    
     //deref instream, istream::peek didn't work?
     while(in->get(ch)) {
         //grab chars / close lines
