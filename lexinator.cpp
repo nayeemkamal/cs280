@@ -75,20 +75,24 @@ Token getNextToken(istream *in, int *lineNum) {
                 } else if( ch == '"' ) {
                     //string stuff
                     state = INSTRING;
+                } else if( ch == '#') {
+                    state = INCOMMENT;
                 } else {
                     // operators
                     TokenType tt = ERR;
                     switch(ch) {
                         case '+':
-                            tt = PLUS; 
+                            tt = PLUS;
+                            break; 
                         case '*':
                             tt = STAR;
+                            break;
                         case '/':
                             tt = SLASH;
+                            break;
                         case '-':
                             tt = MINUS;
-                        case '#':
-                            state = INCOMMENT;
+                            break;
                         case '=':
                             //two char ops are strange
                             lexeme.push_back(ch);
@@ -101,6 +105,7 @@ Token getNextToken(istream *in, int *lineNum) {
                             } else {
                                 return Token(ERR, lexeme, *lineNum);
                             }
+                            break;
                         case '!':
                         //two char ops are strange
                             lexeme.push_back(ch);
@@ -112,6 +117,7 @@ Token getNextToken(istream *in, int *lineNum) {
                                 //tf is that?
                                 return Token(ERR, lexeme, *lineNum);
                             }
+                            break;
                         case '<':
                             //two char ops are strange
                             lexeme.push_back(ch);
@@ -121,6 +127,7 @@ Token getNextToken(istream *in, int *lineNum) {
                                 tt = LEQ;
                             }
                             tt = LT;
+                            break;
                         case '>':
                             //two char ops are strange
                             lexeme.push_back(ch);
@@ -130,6 +137,7 @@ Token getNextToken(istream *in, int *lineNum) {
                                 tt = GEQ;
                             }
                             tt = LT;
+                            break;
                         case '&':
                             //two char ops are strange
                             lexeme.push_back(ch);
@@ -139,6 +147,7 @@ Token getNextToken(istream *in, int *lineNum) {
                                 tt = LOGICAND;
                             }
                             tt = LT;
+                            break;
                         case '|':
                             //two char ops are strange
                             lexeme.push_back(ch);
@@ -148,14 +157,18 @@ Token getNextToken(istream *in, int *lineNum) {
                                 tt = LOGICOR;
                             }
                             tt = LT;
+                            break;
                         case '(':
                             //two char ops are strange
                                 tt = LPAREN;
+                                break;
                         case ')':
                             //two char ops are strange
                                 tt = RPAREN;
+                                break;
                         case ';':
-                                tt = SC;                 
+                                tt = SC;
+                                break;                 
                     } //end opcase
                     return Token(tt, lexeme, *lineNum);
                     //cant return in case statements
@@ -176,16 +189,19 @@ Token getNextToken(istream *in, int *lineNum) {
             //finish strings
             case INSTRING:
                 lexeme += ch;
-                if(ch == '\n') {
-                    return Token(ERR, lexeme, *lineNum);
-                }
                 if(ch == '"') {
                     lexeme = lexeme.substr(1, lexeme.length()-2);
                     return Token(SCONST, lexeme, *lineNum);
                 }
+                if(ch == '\n') {
+                    return Token(ERR, lexeme, *lineNum);
+                }               
                 break; //start the case over
             case INCOMMENT:
-                ;
+                if(ch == '\n') {
+                    state = BEGIN;
+                }
+                break;
         }
     }
     
