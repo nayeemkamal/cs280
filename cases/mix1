@@ -1,0 +1,9 @@
+# this might be a program
+
+x = 10;
+y = 20;
+print x+y;
+
+if x == z then y = "no way";
+
+if true then print "done";

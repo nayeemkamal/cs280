@@ -1,0 +1,6 @@
+IDENT(yes)
+MINUS
+IDENT(no)
+IDENT(yes)
+Error on line 6 ("no
+)
